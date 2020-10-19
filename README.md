@@ -1,6 +1,4 @@
 # Note Taker
----
-
 
 ![](https://img.shields.io/badge/license-MIT%20License-blue)
 
