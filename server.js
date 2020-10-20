@@ -12,6 +12,7 @@ app.use(express.json())
 const PORT = 3000;
 
 //routes
+const apiRoutes = require("./routes/apiRoutes")(app);
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"))
 })
