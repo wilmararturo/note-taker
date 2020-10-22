@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
-// const json = require("json")
+const uuidv1 = require("uuid/v1")
+
+const dataStore = require("../lib/dataStore");
 
 const dbFile = path.join(__dirname, "../db/db.json");
 
@@ -25,13 +27,14 @@ const updateDBFile = (dbFile, data) => {
 
 module.exports = function (app) {
     app.get("/api/notes", (req, res) => {
-        const notesJSON = readDBFile(dbFile);
-        console.log(notesJSON);
-        res.json(notesJSON);
+        dataStore.getNotes()
+            .then((notes) => res.json(notes))
+            .catch((err) => res.status(500).json(err))
     });
 
     app.post("/api/notes", (req, res) => {
-        const newNote = req.body;
+        const { title, text } = req.body;
+        const newNote = { title, text, id: uuidv1() };
         const notesJSON = readDBFile(dbFile);
         notesJSON.push(newNote);
         updateDBFile(dbFile, JSON.stringify(notesJSON));
@@ -39,10 +42,12 @@ module.exports = function (app) {
     });
 
     app.delete("/api/notes/:id", (req, res) => {
-        const delNote = req.body;
         const delNoteId = req.params.id;
+        console.log(delNoteId);
         const notesJSON = readDBFile(dbFile);
-        notesJSON.splice(delNoteId, 1);
+        console.log(notesJSON);
+        notesJSON.filter((note) => note.id !== delNoteId);
+        console.log(notesJSON);
         updateDBFile(dbFile, JSON.stringify(notesJSON));
         res.json(notesJSON);
     })
