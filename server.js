@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
+app.use(express.static("public"));
 app.use(express.json())
 
 const PORT = process.env.PORT || 3000;
