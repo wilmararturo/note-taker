@@ -36,7 +36,7 @@ An application that may be used to create, save, and retrieve notes.
 
 #### To run this app from Heroku
 
-- Navigate to [Note Taker App]()
+- Navigate to [Note Taker App](https://floating-basin-10582.herokuapp.com/)
 
 ## Usage
 
