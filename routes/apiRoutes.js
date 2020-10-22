@@ -33,23 +33,17 @@ module.exports = function (app) {
     });
 
     app.post("/api/notes", (req, res) => {
-        const { title, text } = req.body;
-        const newNote = { title, text, id: uuidv1() };
-        const notesJSON = readDBFile(dbFile);
-        notesJSON.push(newNote);
-        updateDBFile(dbFile, JSON.stringify(notesJSON));
-        res.json(newNote);
+        const newNote = req.body;
+        dataStore.putNote(newNote)
+            .then((note) => res.json(note))
+            .catch((err) => res.status(500).json(err));
     });
 
     app.delete("/api/notes/:id", (req, res) => {
-        const delNoteId = req.params.id;
-        console.log(delNoteId);
-        const notesJSON = readDBFile(dbFile);
-        console.log(notesJSON);
-        notesJSON.filter((note) => note.id !== delNoteId);
-        console.log(notesJSON);
-        updateDBFile(dbFile, JSON.stringify(notesJSON));
-        res.json(notesJSON);
+        const noteID = req.params.id;
+        dataStore.deleteNote(noteID)
+            .then(() => res.json({ sucess: true }))
+            .catch((err) => res.status(500).json(err));
     })
 
 
